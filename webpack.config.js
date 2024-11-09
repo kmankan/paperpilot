@@ -33,7 +33,7 @@ module.exports = {
     ]
   },
   resolve: {
-    extensions: ['.tsx', '.ts', '.js'],
+    extensions: ['.tsx', '.ts', '.js', '.mjs'],
     alias: {
       '@': path.resolve(__dirname, 'src/')
     },
@@ -52,18 +52,25 @@ module.exports = {
     new CopyPlugin({
       patterns: [
         { 
-          from: "public/icons",
-          to: "icons",
-          noErrorOnMissing: true
+          from: "public/icons/*.png",
+          to: "icons/[name][ext]"
         },
-        { from: "manifest.json", to: "manifest.json" },
+        { 
+          from: "manifest.json",
+          to: "manifest.json"
+        },
         { 
           from: "src/styles/styles.css", 
           to: "styles.css",
           noErrorOnMissing: true
         },
         {
-          from: path.join('node_modules', 'pdfjs-dist', 'build', 'pdf.worker.min.js'),
+          from: path.join(__dirname, 'node_modules', 'pdfjs-dist', 'legacy', 'build', 'pdf.worker.js'),
+          to: 'pdf.worker.min.js',
+          noErrorOnMissing: true
+        },
+        {
+          from: path.join(__dirname, 'node_modules', 'pdfjs-dist', 'build', 'pdf.worker.mjs'),
           to: 'pdf.worker.min.js',
           noErrorOnMissing: true
         }

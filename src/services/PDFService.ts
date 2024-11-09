@@ -1,6 +1,6 @@
 import { TextItem, PDFDocumentProxy } from 'pdfjs-dist/types/src/display/api';
 import { DEBUG } from '../debug/debug';
-import { pdfjsLib, initializePDFJS } from '../config/pdf.config';
+import { getDocument, initializePDFJS } from '../config/pdf.config';
 
 interface PDFPage {
   pageNumber: number;
@@ -77,8 +77,8 @@ export class PDFService {
     try {
       DEBUG.log('Starting PDF parse:', url);
       
-      // Load the PDF document
-      this.document = await pdfjsLib.getDocument(url).promise;
+      // Load the PDF document using the correct import
+      this.document = await getDocument(url).promise;
       DEBUG.log('PDF document loaded, pages:', this.document.numPages);
 
       // Get document metadata with proper typing
@@ -122,7 +122,7 @@ export class PDFService {
     const locations: TextLocation[] = [];
     
     try {
-      const doc = await pdfjsLib.getDocument(pdfUrl).promise;
+      const doc = await getDocument(pdfUrl).promise;
       
       for (let i = 1; i <= doc.numPages; i++) {
         const page = await doc.getPage(i);

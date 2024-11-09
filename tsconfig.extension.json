@@ -2,6 +2,7 @@
   "compilerOptions": {
     "target": "es6",
     "module": "commonjs",
+    "moduleResolution": "node",
     "strict": true,
     "esModuleInterop": true,
     "skipLibCheck": true,
@@ -14,7 +15,9 @@
       "@/*": ["src/*"]
     },
     "lib": ["dom", "es6", "dom.iterable", "scripthost"],
-    "jsx": "react"
+    "jsx": "react",
+    "allowJs": true,
+    "resolveJsonModule": true
   },
   "include": [
     "src/**/*.ts",
@@ -22,6 +25,7 @@
   ],
   "exclude": [
     "node_modules",
-    "dist"
+    "dist",
+    ".next"
   ]
 } 
