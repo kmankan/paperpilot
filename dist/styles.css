@@ -1,0 +1,401 @@
+.keyword-highlight {
+  position: relative;
+  cursor: pointer;
+}
+
+.keyword-svg {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+}
+
+.keyword-svg rect {
+  width: 100%;
+  height: 100%;
+  fill: rgba(255, 255, 0, 0.3);
+  stroke: rgba(255, 200, 0, 0.5);
+  stroke-width: 1;
+}
+
+.paper-pilot-modal {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: white;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  max-width: 800px;
+  width: 90%;
+  max-height: 90vh;
+  overflow-y: auto;
+}
+
+.modal-section {
+  margin-bottom: 20px;
+  padding: 15px;
+  border: 1px solid #eee;
+  border-radius: 4px;
+}
+
+.modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.where-are-we {
+  position: relative;
+}
+
+.mermaid-container {
+  background: white;
+  padding: 15px;
+  border-radius: 4px;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+}
+
+.wiki-frame-modal {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 80vw;
+  height: 80vh;
+  background: white;
+  border-radius: 8px;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+  z-index: 1000;
+}
+
+.wiki-frame-header {
+  display: flex;
+  justify-content: flex-end;
+  padding: 8px;
+  border-bottom: 1px solid #eee;
+}
+
+.wiki-frame-header button {
+  background: none;
+  border: none;
+  font-size: 20px;
+  cursor: pointer;
+  padding: 4px 8px;
+  border-radius: 4px;
+}
+
+.wiki-frame-header button:hover {
+  background: #f5f5f5;
+}
+
+/* Dictionary Definition Styles */
+.dictionary-definition {
+  font-family: Georgia, serif;
+  padding: 20px;
+  background: #fff;
+  border-radius: 8px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.definition-header {
+  margin-bottom: 15px;
+}
+
+.definition-header .word {
+  font-size: 24px;
+  font-weight: bold;
+  color: #333;
+}
+
+.definition-header .pronunciation {
+  font-family: monospace;
+  color: #666;
+  margin-left: 10px;
+  font-size: 16px;
+}
+
+.definition-header .part-of-speech {
+  color: #666;
+  font-style: italic;
+  margin-left: 10px;
+}
+
+.definition-body {
+  color: #444;
+  line-height: 1.6;
+}
+
+.definition-text {
+  margin-bottom: 15px;
+}
+
+.examples {
+  list-style: none;
+  padding-left: 20px;
+  margin-top: 10px;
+  color: #666;
+}
+
+.example {
+  font-style: italic;
+  margin-bottom: 8px;
+}
+
+/* Loading State */
+.dictionary-definition.loading {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100px;
+}
+
+.loading-spinner {
+  color: #666;
+  font-style: italic;
+}
+
+/* Error State */
+.dictionary-definition.error {
+  background: #fff5f5;
+  color: #e53e3e;
+  text-align: center;
+  padding: 20px;
+}
+
+.error-message {
+  margin: 0;
+  font-weight: 500;
+}
+
+/* Paper Context Definition Styles */
+.paper-context {
+  font-family: system-ui, -apple-system, sans-serif;
+  padding: 20px;
+  background: #fff;
+  border-radius: 8px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.context-section {
+  margin-bottom: 20px;
+  padding-bottom: 15px;
+  border-bottom: 1px solid #eee;
+}
+
+.context-section:last-child {
+  margin-bottom: 0;
+  padding-bottom: 0;
+  border-bottom: none;
+}
+
+.context-section h3 {
+  color: #2d3748;
+  font-size: 1.1rem;
+  margin-bottom: 10px;
+  font-weight: 600;
+}
+
+.role-text {
+  color: #1a365d;
+  font-weight: 500;
+  line-height: 1.6;
+}
+
+.methodology-text {
+  color: #2d3748;
+  line-height: 1.6;
+}
+
+.significance-text {
+  color: #2d3748;
+  line-height: 1.6;
+  font-weight: 500;
+}
+
+.implications-text {
+  color: #4a5568;
+  line-height: 1.6;
+  font-style: italic;
+}
+
+/* Loading State */
+.paper-context.loading {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 150px;
+}
+
+.paper-context .loading-spinner {
+  color: #4a5568;
+  font-style: italic;
+}
+
+/* Error State */
+.paper-context.error {
+  background: #fff5f5;
+  color: #e53e3e;
+  text-align: center;
+  padding: 20px;
+}
+
+.paper-context .error-message {
+  margin: 0;
+  font-weight: 500;
+}
+
+/* Responsive adjustments */
+@media (max-width: 640px) {
+  .paper-context {
+    padding: 15px;
+  }
+
+  .context-section h3 {
+    font-size: 1rem;
+  }
+}
+
+/* Idea Tree Styles */
+.idea-tree {
+  font-family: system-ui, -apple-system, sans-serif;
+  padding: 20px;
+  background: #fff;
+  border-radius: 8px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.idea-tree-header {
+  margin-bottom: 20px;
+}
+
+.idea-tree-header h3 {
+  color: #2d3748;
+  font-size: 1.1rem;
+  margin: 0;
+  font-weight: 600;
+}
+
+.idea-tree-container {
+  background: #fafafa;
+  padding: 20px;
+  border-radius: 4px;
+  overflow-x: auto;
+  min-height: 200px;
+}
+
+/* Mermaid customization */
+.idea-tree .mermaid {
+  font-family: 'Fira Code', monospace;
+}
+
+.idea-tree .mermaid .node rect {
+  fill: #fff;
+  stroke: #4a5568;
+  stroke-width: 2px;
+}
+
+.idea-tree .mermaid .node.root rect {
+  fill: #ebf8ff;
+  stroke: #4299e1;
+}
+
+.idea-tree .mermaid .node.related rect {
+  fill: #f0fff4;
+  stroke: #48bb78;
+}
+
+.idea-tree .mermaid .node.implication rect {
+  fill: #fff5f5;
+  stroke: #f56565;
+}
+
+.idea-tree .mermaid .edgePath path {
+  stroke: #718096;
+  stroke-width: 1.5px;
+}
+
+/* Legend */
+.idea-tree-legend {
+  margin-top: 20px;
+  padding-top: 15px;
+  border-top: 1px solid #edf2f7;
+  display: flex;
+  gap: 20px;
+  flex-wrap: wrap;
+}
+
+.legend-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.875rem;
+  color: #4a5568;
+}
+
+.legend-dot {
+  width: 12px;
+  height: 12px;
+  border-radius: 3px;
+  border: 2px solid;
+}
+
+.legend-dot.root {
+  background: #ebf8ff;
+  border-color: #4299e1;
+}
+
+.legend-dot.related {
+  background: #f0fff4;
+  border-color: #48bb78;
+}
+
+.legend-dot.implication {
+  background: #fff5f5;
+  border-color: #f56565;
+}
+
+/* Loading State */
+.idea-tree.loading {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 200px;
+}
+
+.idea-tree .loading-spinner {
+  color: #4a5568;
+  font-style: italic;
+}
+
+/* Error State */
+.idea-tree.error {
+  background: #fff5f5;
+  color: #e53e3e;
+  text-align: center;
+  padding: 20px;
+}
+
+.idea-tree .error-message {
+  margin: 0;
+  font-weight: 500;
+}
+
+/* Responsive adjustments */
+@media (max-width: 640px) {
+  .idea-tree {
+    padding: 15px;
+  }
+
+  .idea-tree-container {
+    padding: 10px;
+  }
+
+  .idea-tree-legend {
+    justify-content: center;
+  }
+} 

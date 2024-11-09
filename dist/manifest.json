@@ -1,0 +1,39 @@
+{
+  "manifest_version": 3,
+  "name": "PaperPilot",
+  "version": "1.0",
+  "description": "Interactive paper reading assistant with keyword context and visualization",
+  "permissions": [
+    "activeTab",
+    "scripting",
+    "webNavigation"
+  ],
+  "host_permissions": [
+    "*://*/*.pdf"
+  ],
+  "action": {
+    "default_icon": {
+      "16": "public/icon16.png",
+      "48": "public/icon48.png",
+      "128": "public/icon128.png"
+    }
+  },
+  "content_scripts": [
+    {
+      "matches": ["*://*/*.pdf"],
+      "js": ["dist/content.js"],
+      "css": ["dist/styles.css"]
+    }
+  ],
+  "background": {
+    "service_worker": "dist/background.js"
+  },
+  "web_accessible_resources": [
+    {
+      "resources": [
+        "pdf.worker.min.js"
+      ],
+      "matches": ["<all_urls>"]
+    }
+  ]
+} 
