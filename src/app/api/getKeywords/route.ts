@@ -10,22 +10,26 @@ export async function POST(request: Request) {
   try {
     const { text } = await request.json();
 
+    console.log('text type:', typeof text);
+    console.log('text preview:', text?.substring?.(0, 100));
+
+    if (!text || typeof text !== 'string') {
+      return NextResponse.json(
+        { error: 'Invalid input: text must be a string' },
+        { status: 400 }
+      );
+    }
+
+    console.log('text recieved', !!text);
     const completion = await openai.chat.completions.create({
       messages: [
         {
           role: "system",
-          content: "You are a scientific literature expert that extracts keywords from academic papers. You must only return keywords that appear verbatim in the source text."
+          content: "You are a scientific literature expert that extracts keywords from academic papers. You must return keywords as a JSON array of strings that appear verbatim in the source text."
         },
         {
           role: "user",
-          content: `Analyze this scientific article and extract EXACTLY 10 keywords that appear verbatim in the text. These keywords should be the most significant terms that:
-          - Are explicitly present in the paper
-          - Represent main concepts, methodologies, or findings
-          - Would be valuable for academic indexing and literature searches
-          - Include both specific technical terms and broader research areas
-
-          Return ONLY a valid JSON array of exactly 10 strings, like this: ["keyword1", "keyword2", "keyword3"]
-          Do not include any other text in your response.
+          content: `Analyze this scientific article and extract EXACTLY 10 keywords that appear in the text. Return ONLY a JSON array of strings, nothing else.
 
           Article text:\n${text}`
         }
@@ -33,12 +37,29 @@ export async function POST(request: Request) {
       model: "gpt-4o-mini",
       temperature: 0.1,
     });
+    console.log('response recieved', completion.choices[0].message.content);
+    // Add better error handling for the response
+    const content = completion.choices[0].message.content;
+    if (!content) {
+      throw new Error('Empty response from AI');
+    }
 
-    const keywordsString = completion.choices[0].message.content?.trim() || '[]';
-    const keywords = JSON.parse(keywordsString) as string[];
+    // Clean the content by removing code block markers and language indicators
+    const cleanedContent = content
+      .replace(/^```(?:json)?\s*/, '') // Remove opening ```json or just ```
+      .replace(/\s*```$/, '')          // Remove closing ```
+      .trim();
+
+    let keywords: string[];
+    try {
+      keywords = JSON.parse(cleanedContent) as string[];
+    } catch (e) {
+      console.error('Failed to parse AI response:', content);
+      throw new Error('Invalid JSON response from AI');
+    }
     
     // Validate array
-    if (!Array.isArray(keywords) || keywords.length !== 10) {
+    if (!Array.isArray(keywords)) {
       throw new Error('Invalid response format from AI');
     }
 

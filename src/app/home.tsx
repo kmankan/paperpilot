@@ -1,3 +1,5 @@
+'use client';
+
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { isValidUrl } from '@/app/utils/urlcheck';
@@ -20,6 +22,7 @@ export default function Home() {
     }
 
     try {
+      console.log('Checking if URL is accessible');
       // Check if URL is accessible
       const response = await fetch('/api/check-url', {
         method: 'POST',
@@ -31,8 +34,9 @@ export default function Home() {
         throw new Error('URL is not accessible');
       }
 
+
       // If all checks pass, navigate to PDF viewer
-      router.push(`/pdf-viewer?url=${encodeURIComponent(url)}`);
+      router.push(`/pdf-viewer?url=${url}`);
     } catch (error) {
       alert('Unable to access this URL. Please check if it exists and try again.');
     }
@@ -47,7 +51,7 @@ export default function Home() {
   return (
     <main className="min-h-screen flex flex-col items-center justify-center bg-gray-50 px-4">
       <div className="w-full max-w-3xl mx-auto text-center space-y-8">
-        <h1 className="text-4xl md:text-5xl font-bold text-gray-900">
+        <h1 className="text-3xl md:text-4xl font-bold text-gray-700">
           Integrated Research Environment
         </h1>
 

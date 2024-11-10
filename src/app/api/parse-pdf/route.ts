@@ -13,7 +13,9 @@ export async function GET(request: Request) {
       );
     }
 
-    const url = `https://r.jina.ai/${pdfUrl}`;
+    // Decode the URL before sending to Jina
+    const decodedUrl = decodeURIComponent(pdfUrl);
+    const url = `https://r.jina.ai/${decodedUrl}`;
     const response = await fetch(url, {
       headers: {
         'Authorization': `Bearer ${process.env.JINA_API_KEY}`
@@ -25,6 +27,7 @@ export async function GET(request: Request) {
     }
 
     const text = await response.text();
+    console.log('PDF parsed successfully:', text);
     return NextResponse.json({ text });
 
   } catch (error) {
