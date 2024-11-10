@@ -22,10 +22,10 @@ interface Word {
 }
 
 interface PDFViewerProps {
-  pdfUrl: string;
+  keywords: string[];
 }
 
-const PDFViewerWithOverlays: React.FC<PDFViewerProps> = ({ pdfUrl }) => {
+const PDFViewerWithOverlays: React.FC<PDFViewerProps> = ({ keywords }) => {
   const [numPages, setNumPages] = useState<number | null>(null);
   const [pageNumber, setPageNumber] = useState<number>(1);
   const [scale, setScale] = useState<number>(1.0);
@@ -35,6 +35,7 @@ const PDFViewerWithOverlays: React.FC<PDFViewerProps> = ({ pdfUrl }) => {
     context: string;
   } | null>(null);
   const [pdf, setPdf] = useState<PDFDocumentProxy | null>(null);
+  console.log('these are the keywords', keywords);
 
   const onDocumentLoadSuccess = async ({ numPages }: { numPages: number }) => {
     setNumPages(numPages);
