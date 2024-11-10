@@ -7,6 +7,7 @@ import 'react-pdf/dist/esm/Page/TextLayer.css';
 import { PDFDocumentProxy, PDFPageProxy } from 'pdfjs-dist';
 import PaperPilotPanel from '../PaperPilotPanel';
 import type { Annotation } from '../../types/annotations';
+import { useUrlStore } from '@/app/store/UrlStore';
 
 
 interface Word {
@@ -24,7 +25,7 @@ interface PDFViewerProps {
   pdfUrl: string;
 }
 
-const PDFViewerWithOverlays: React.FC<PDFViewerProps> = ({ keywords, pdfUrl }) => {
+const PDFViewerWithOverlays: React.FC<PDFViewerProps> = ({ keywords }) => {
   const [numPages, setNumPages] = useState<number | null>(null);
   const [pageNumber, setPageNumber] = useState<number>(1);
   const [scale, setScale] = useState<number>(1.0);
@@ -34,11 +35,13 @@ const PDFViewerWithOverlays: React.FC<PDFViewerProps> = ({ keywords, pdfUrl }) =
     context: string;
   } | null>(null);
   const [pdf, setPdf] = useState<PDFDocumentProxy | null>(null);
+  const pdfDirectory = useUrlStore(state => state.fileName);
+
   console.log('these are the keywords', keywords);
 
   const onDocumentLoadSuccess = async ({ numPages }: { numPages: number }) => {
     setNumPages(numPages);
-    const loadedPdf = await pdfjs.getDocument(pdfUrl).promise;
+    const loadedPdf = await pdfjs.getDocument(pdfDirectory).promise;
     setPdf(loadedPdf);
     processPage(loadedPdf, pageNumber);
   };
@@ -130,7 +133,7 @@ const PDFViewerWithOverlays: React.FC<PDFViewerProps> = ({ keywords, pdfUrl }) =
     <div className="relative flex">
       <div className="flex-1">
         <Document
-          file={pdfUrl}
+          file={pdfDirectory}
           onLoadSuccess={onDocumentLoadSuccess}
         >
           <div className="relative">
