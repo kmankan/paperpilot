@@ -1,10 +1,13 @@
-import PDFViewerClient from '@/app/components/PDFViewerClient';
+import PDFViewerWithOverlays from "@/app/components/pdf-viewer/keywordOverlay";
+import PDFProvider from '@/app/components/PDFProvider';
 
-export default function Page() {
+export default function PDFViewerPage() {
   return (
-    <div className="container mx-auto p-4">
-      <h1 className="text-2xl mb-4">PDF Viewer Test</h1>
-      <PDFViewerClient />
-    </div>
+    <PDFProvider>
+      <div className="container mx-auto p-4">
+        <h1 className="text-2xl font-bold mb-4">Interactive PDF Viewer</h1>
+        <PDFViewerWithOverlays pdfUrl="/2411.pdf" />
+      </div>
+    </PDFProvider>
   );
 }
