@@ -84,3 +84,35 @@ body {
   max-width: 65ch;
   line-height: 1.6;
 }
+
+/* Add these styles for Mermaid diagrams */
+.mermaid-container {
+  background: white;
+  padding: 1rem;
+  border-radius: 0.5rem;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.mermaid-diagram {
+  display: flex;
+  justify-content: center;
+  min-height: 200px;
+}
+
+/* Style adjustments for Mermaid elements */
+.mermaid .node rect,
+.mermaid .node circle,
+.mermaid .node ellipse,
+.mermaid .node polygon {
+  fill: #f3f4f6;
+  stroke: #9ca3af;
+}
+
+.mermaid .edgePath .path {
+  stroke: #9ca3af;
+}
+
+.mermaid .label {
+  font-family: var(--font-geist-sans);
+  color: #374151;
+}
