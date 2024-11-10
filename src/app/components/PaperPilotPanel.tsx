@@ -38,14 +38,22 @@ export default function PaperPilotPanel({ keyword, context }: PaperPilotPanelPro
     whereAreWe: null,
     definition: null,
     context: null,
-    ideaTree: null
+    ideaTree: null,
+    loading: {
+      whereAreWe: false,
+      definition: false,
+      context: false,
+      tree: false
+    },
+    error: undefined
   });
 
   const tabs = [
+    { id: 'whereAreWe' as const, label: 'Where Are We' },
     { id: 'definition' as const, label: 'Definition' },
     { id: 'context' as const, label: 'Context' },
     { id: 'tree' as const, label: 'Idea Tree' },
-    { id: 'whereAreWe' as const, label: 'Where Are We' }
+    
   ];
 
   // Load content when keyword changes
@@ -68,14 +76,20 @@ export default function PaperPilotPanel({ keyword, context }: PaperPilotPanelPro
         setLoading(prev => ({ ...prev, whereAreWe: false }));
 
         // Load Definition
-        setLoading(prev => ({ ...prev, definition: true }));
-        const defData = await getDictionaryDefinition(keyword);
-        setContent(prev => ({ 
-          ...prev, 
-          definition: defData.definition,
-          sources: defData.sources 
+        setContent(prev => ({
+          ...prev,
+          loading: { ...prev.loading, definition: true }
         }));
-        setLoading(prev => ({ ...prev, definition: false }));
+        
+        const defData = await getDictionaryDefinition(keyword);
+        setContent(prev => ({
+          ...prev,
+          definition: {
+            ...defData.definition,
+            sources: defData.sources
+          },
+          loading: { ...prev.loading, definition: false }
+        }));
 
         // Load Context
         setLoading(prev => ({ ...prev, context: true }));
@@ -124,6 +138,45 @@ export default function PaperPilotPanel({ keyword, context }: PaperPilotPanelPro
     setActiveTab('definition');
   };
 
+  // Add regeneration handlers
+  const handleWhereAreWeRegenerate = async () => {
+    try {
+      setLoading(prev => ({ ...prev, whereAreWe: true }));
+      const whereAreWeData = await getWhereAreWe(keyword, context);
+      setContent(prev => ({ ...prev, whereAreWe: whereAreWeData }));
+    } catch (error) {
+      DEBUG.error('Failed to regenerate WhereAreWe:', error);
+      setContent(prev => ({
+        ...prev,
+        error: { ...prev.error, whereAreWe: 'Failed to regenerate domain context' }
+      }));
+    } finally {
+      setLoading(prev => ({ ...prev, whereAreWe: false }));
+    }
+  };
+
+  const handleIdeaTreeRegenerate = async () => {
+    try {
+      setLoading(prev => ({ ...prev, tree: true }));
+      const treeData = await getIdeaTree(keyword, context);
+      setContent(prev => ({ 
+        ...prev, 
+        ideaTree: {
+          diagram: treeData.diagram,
+          nodes: treeData.nodes
+        }
+      }));
+    } catch (error) {
+      DEBUG.error('Failed to regenerate IdeaTree:', error);
+      setContent(prev => ({
+        ...prev,
+        error: { ...prev.error, tree: 'Failed to regenerate idea tree' }
+      }));
+    } finally {
+      setLoading(prev => ({ ...prev, tree: false }));
+    }
+  };
+
   if (!keyword) return null;
 
   return (
@@ -164,13 +217,14 @@ export default function PaperPilotPanel({ keyword, context }: PaperPilotPanelPro
                 <WhereAreWe 
                   keyword={keyword}
                   paperContext={context}
+                  onRegenerate={handleWhereAreWeRegenerate}
                 />
               )}
               
               {activeTab === 'definition' && (
                 <DictionaryDefinition 
                   definition={content.definition?.text || ''}
-                  sources={content.sources || []}
+                  sources={content.definition?.sources || []}
                 />
               )}
               
@@ -185,6 +239,7 @@ export default function PaperPilotPanel({ keyword, context }: PaperPilotPanelPro
                 <IdeaTree 
                   relationships={content.ideaTree?.diagram || ''}
                   onNodeClick={(concept) => console.log('Clicked concept:', concept)}
+                  onRegenerate={handleIdeaTreeRegenerate}
                 />
               )}
             </div>
