@@ -8,8 +8,6 @@ import { PDFDocumentProxy, PDFPageProxy } from 'pdfjs-dist';
 import PaperPilotPanel from '../PaperPilotPanel';
 import type { Annotation } from '../../types/annotations';
 
-// Keywords we want to make interactive
-const KEYWORDS = ['lensing'];
 
 interface Word {
   text: string;
@@ -22,10 +20,11 @@ interface Word {
 }
 
 interface PDFViewerProps {
+  keywords: string[];
   pdfUrl: string;
 }
 
-const PDFViewerWithOverlays: React.FC<PDFViewerProps> = ({ pdfUrl }) => {
+const PDFViewerWithOverlays: React.FC<PDFViewerProps> = ({ keywords, pdfUrl }) => {
   const [numPages, setNumPages] = useState<number | null>(null);
   const [pageNumber, setPageNumber] = useState<number>(1);
   const [scale, setScale] = useState<number>(1.0);
@@ -35,6 +34,7 @@ const PDFViewerWithOverlays: React.FC<PDFViewerProps> = ({ pdfUrl }) => {
     context: string;
   } | null>(null);
   const [pdf, setPdf] = useState<PDFDocumentProxy | null>(null);
+  console.log('these are the keywords', keywords);
 
   const onDocumentLoadSuccess = async ({ numPages }: { numPages: number }) => {
     setNumPages(numPages);
@@ -65,7 +65,7 @@ const PDFViewerWithOverlays: React.FC<PDFViewerProps> = ({ pdfUrl }) => {
     const processedWords = textContent.items
       .map((item: any) => {
         if ('str' in item) {
-          const keyword = KEYWORDS.find(kw =>
+          const keyword = keywords.find(kw =>
             item.str.toLowerCase().includes(kw.toLowerCase())
           );
           if (keyword) {
@@ -179,6 +179,7 @@ const PDFViewerWithOverlays: React.FC<PDFViewerProps> = ({ pdfUrl }) => {
           </button>
         </div>
       </div>
+
 
       {selectedWord && (
         <div className="w-96 border-l border-gray-200">
