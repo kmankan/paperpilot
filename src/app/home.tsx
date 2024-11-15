@@ -14,23 +14,22 @@ export default function Home() {
   const [isUploading, setIsUploading] = useState(false);
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
   const dropZoneRef = useRef<HTMLDivElement>(null);
+  const [isNavigating, setIsNavigating] = useState(false);
 
   const handleSubmit = async () => {
-    // Early return if URL is empty
     if (!url.trim()) {
-      alert('Please enter a URL');
+      toast.error('Please enter a URL');
       return;
     }
 
-    // Check if URL is valid format
     if (!isValidUrl(url)) {
-      alert('Please enter a valid URL');
+      toast.error('Please enter a valid URL');
       return;
     }
 
     try {
+      setIsNavigating(true);
       console.log('Checking if URL is accessible');
-      // Check if URL is accessible
       const response = await fetch('/api/check-url', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -41,12 +40,11 @@ export default function Home() {
         throw new Error('URL is not accessible');
       }
 
-
-      // If all checks pass, navigate to PDF viewer
       setUrl(url);
       router.push(`/pdf-viewer?url=${url}`);
     } catch (error) {
-      alert('Unable to access this URL. Please check if it exists and try again.');
+      toast.error('Unable to access this URL. Please check if it exists and try again.');
+      setIsNavigating(false);
     }
   };
 
@@ -155,10 +153,18 @@ export default function Home() {
             />
             <button
               onClick={handleSubmit}
+              disabled={isNavigating}
               aria-label="Submit URL"
-              className="w-full sm:w-auto px-6 py-2 bg-blue-600 text-white font-medium rounded-lg hover:bg-red-400 focus:ring-2 focus:ring-blue-500 focus:outline-none transition-colors"
+              className="w-full sm:w-auto px-6 py-2 bg-blue-600 text-white font-medium rounded-lg hover:bg-red-400 focus:ring-2 focus:ring-blue-500 focus:outline-none transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
             >
-              Submit
+              {isNavigating ? (
+                <div className="flex items-center gap-2">
+                  <Loader2 className="w-4 h-4 animate-spin" />
+                  Loading...
+                </div>
+              ) : (
+                'Submit'
+              )}
             </button>
           </div>
 
