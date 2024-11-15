@@ -93,6 +93,7 @@ const PDFViewerWithOverlays: React.FC<PDFViewerProps> = ({ keywords }) => {
       .filter((word): word is Word => word !== null);
 
     setInteractiveWords(processedWords);
+    console.log('processed words', processedWords);
   };
 
   const renderOverlays = () => {
@@ -105,6 +106,7 @@ const PDFViewerWithOverlays: React.FC<PDFViewerProps> = ({ keywords }) => {
           top: `${word.y * scale}px`,
           width: `${word.width * scale}px`,
           height: `${Math.max(word.height, 12) * scale}px`,
+          transform: 'translateY(-100%)', // Add this line to shift the highlight up
           backgroundColor: 'rgba(255, 255, 0, 0.2)',
           border: '1px solid rgba(0, 0, 255, 0.2)',
           pointerEvents: 'auto',

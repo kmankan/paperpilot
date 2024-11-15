@@ -16,30 +16,34 @@ PaperPilot is an intelligent PDF reader that enhances academic paper comprehensi
 
 ### Prerequisites
 
-- Node.js 18+ 
+- Node.js 18+
 - OpenAI API key
 - npm/yarn/pnpm
 
 ### Installation
 
 1. Clone the repository:
-``` bash
+
+```bash
 git clone https://github.com/yourusername/paperpilot.git
 cd paperpilot
 ```
 
 2. Install dependencies:
-``` bash
+
+```bash
 bun install
 ```
 
 3. Create a `.env.local` file in the root directory:
-``` typescript
-OPENAI_API_KEY=your_openai_api_key_here
+
+```typescript
+NEXT_PUBLIC_OPENAI_API_KEY = your_openai_api_key_here;
 ```
 
 4. Start the development server:
-``` bash
+
+```bash
 bun run dev
 ```
 
