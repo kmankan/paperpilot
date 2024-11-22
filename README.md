@@ -25,7 +25,7 @@ PaperPilot is an intelligent PDF reader that enhances academic paper comprehensi
 1. Clone the repository:
 
 ```bash
-git clone https://github.com/yourusername/paperpilot.git
+git clone https://github.com/kmankan/paperpilot.git
 cd paperpilot
 ```
 
@@ -35,10 +35,19 @@ cd paperpilot
 bun install
 ```
 
-3. Create a `.env.local` file in the root directory:
+3. Create a `.env` file in the root directory, use the template.env file as a template for what you need to add:
 
 ```typescript
-NEXT_PUBLIC_OPENAI_API_KEY = your_openai_api_key_here;
+PORT=3012
+
+# OPENAI
+OPENAI_API_KEY=
+
+# JINA API KEY for Reader (https://jina.ai/)
+JINA_API_KEY=
+
+# APP
+NEXT_PUBLIC_APP_URL=http://localhost:${PORT}
 ```
 
 4. Start the development server:
@@ -47,7 +56,7 @@ NEXT_PUBLIC_OPENAI_API_KEY = your_openai_api_key_here;
 bun run dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) to see PaperPilot in action!
+Open [http://localhost:3012](http://localhost:3012) to see PaperPilot in action!
 
 ## 🛠️ Technology Stack
 
